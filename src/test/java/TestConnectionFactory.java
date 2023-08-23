@@ -3,7 +3,7 @@ import com.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ConnectionFactoryTest {
+public class TestConnectionFactory {
     public static void main(String[] args)throws SQLException {
         ConnectionFactory connectionFactory = new ConnectionFactory();
 

@@ -1,5 +1,8 @@
 package com.views;
 
+import com.DAO.EmpleadoDAO;
+import com.controller.LoginController;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,6 +33,8 @@ public class Login extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 
+	private LoginController loginController;
+
 	/**
 	 * Launch the application.
 	 */
@@ -50,6 +55,8 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		this.loginController = new LoginController();
+
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,9 +242,16 @@ public class Login extends JFrame {
 	}
 	
 	private void Login() {
-		 String Usuario= "admin";
-	     String Contraseña="admin";
+		 String Usuario = txtUsuario.getText();
+	     String Contraseña = new String( txtContrasena.getPassword());
 
+		 boolean a = loginController.login(Usuario, Contraseña);
+		 if(a) {
+			 dispose();
+		 }else {
+			 JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+		 }
+/*
 	        String contrase=new String (txtContrasena.getPassword());
 
 	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
@@ -246,7 +260,7 @@ public class Login extends JFrame {
 	            dispose();	 
 	        }else {
 	            JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
-	        }
+	        }*/
 	} 
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();

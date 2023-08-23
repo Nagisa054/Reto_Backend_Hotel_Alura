@@ -54,7 +54,7 @@ CREATE TABLE Empleado(
     id INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    edad INT(3) NOT NULL,
+    edad INT(3) DEFAULT 18,
     Puesto VARCHAR(150) DEFAULT 'Recepcionista',
     nombre_en_sistema VARCHAR(100),
     clave_en_sistema VARCHAR(20) DEFAULT '000000',
@@ -131,15 +131,13 @@ VALUES(
 INSERT INTO Empleado(
     nombre,
     apellido,
-    edad,
     Puesto,
     clave_en_sistema
 ) VALUES(
-    'Juan',
-    'Rojas',
-    19,
-    'Administrador',
-    'Admin'
+    'admin',
+    'admin',
+    'Admin',
+    'admin'
 );
 
 #Aquí listamos todos los registros guardados anteriormente.
