@@ -17,7 +17,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.SystemColor;
 import javax.swing.JSeparator;
-
+/**
+ * Este código fué proporcionado por
+ * la gente de Alura-Chalenges y solo
+ * una pequeña párate fué modificada
+ * por Juan Pablo Rojas | Nagisa054.
+ * <br>
+ * Código original: https://github.com/alura-challenges/challenge-one-alura-hotel-latam
+ * <br><br>
+ * @since 24/08/2023
+ * @author Juan Pablo Rojas | Nagisa054
+ */
 @SuppressWarnings("serial")
 public class MenuUsuario extends JFrame {
 
@@ -142,7 +152,40 @@ public class MenuUsuario extends JFrame {
 		lblBusquedaDeReservas.setForeground(Color.WHITE);
 		lblBusquedaDeReservas.setFont(new Font("Roboto", Font.PLAIN, 18));
 		btnBusqueda.add(lblBusquedaDeReservas);
-		
+
+		/**
+		 * Boton Cerrar sesion
+		 */
+		JPanel btnCerrarSesion = new JPanel();
+		btnCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCerrarSesion.setBackground(new Color(118, 187, 223));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCerrarSesion.setBackground(new Color(12, 138, 199));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MenuPrincipal principal = new MenuPrincipal();
+				principal.setVisible(true);
+				dispose();
+			}
+		});
+		btnCerrarSesion.setBounds(0, 369, 257, 56);
+		btnCerrarSesion.setBackground(new Color(12, 138, 199));
+		panelMenu.add(btnCerrarSesion);
+		btnCerrarSesion.setLayout(null);
+
+		JLabel lblCerrarCesion = new JLabel("Cerrar sesion");
+		lblCerrarCesion.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagenes/cerrar-sesion 32-px.png")));
+		lblCerrarCesion.setBounds(27, 11, 200, 34);
+		lblCerrarCesion.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCerrarCesion.setForeground(Color.WHITE);
+		lblCerrarCesion.setFont(new Font("Roboto", Font.PLAIN, 18));
+		btnCerrarSesion.add(lblCerrarCesion);
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(26, 219, 201, 2);
 		panelMenu.add(separator);
