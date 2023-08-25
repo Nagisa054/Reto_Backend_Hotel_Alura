@@ -7,11 +7,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    private String url = "jdbc:mysql://localhost/hotel_Alura_db";
+    private String url = "jdbc:mysql://localhost/hotel_alura_db";
     private String timeZone = "useTimeZone=true";
     private String serverTimeZone = "serverTimeZone=UTC";
     private DataSource dataSource;
 
+    /**
+     * Crea un pool de 10 conexiones a la base de datos hotel_alura_db
+     */
     public ConnectionFactory() {
         var pooledDataSource = new ComboPooledDataSource();
         pooledDataSource.setJdbcUrl(url + "?" + timeZone + "&" + serverTimeZone);
@@ -23,6 +26,11 @@ public class ConnectionFactory {
 
     }
 
+    /**
+     * Toma una conexión del pool de conexiones y la debuelve
+     * siempre y cuando el pool de conexiones no esté lleno.
+     * @return una conexión con la base de datos hotel_alura_db
+     */
     public Connection tryConnection(){
         try {
             return this.dataSource.getConnection();

@@ -1,6 +1,5 @@
 package com.views;
 
-import com.DAO.EmpleadoDAO;
 import com.controller.LoginController;
 
 import java.awt.EventQueue;
@@ -21,11 +20,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+/**
+ * Este código fué proporcionado por
+ * la gente de Alura-Chalenges y solo
+ * una pequeña párate fué modificada
+ * por Juan Pablo Rojas | Nagisa054.
+ * <br>
+ * Código original: https://github.com/alura-challenges/challenge-one-alura-hotel-latam
+ * <br><br>
+ * @since 24/08/2023
+ * @author Juan Pablo Rojas | Nagisa054
+*/
 public class Login extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
@@ -240,27 +247,25 @@ public class Login extends JFrame {
 		panel.add(header);
 		header.setLayout(null);
 	}
-	
+
+	/**
+	 * Este método se encarga de gestionar
+	 * el inicio de sesión en el sistema.
+	 * Hace uso del método login de la
+	 * clase LoginController.
+	 */
 	private void Login() {
 		 String Usuario = txtUsuario.getText();
 	     String Contraseña = new String( txtContrasena.getPassword());
 
 		 boolean a = loginController.login(Usuario, Contraseña);
 		 if(a) {
+		 	//si a es true cierra la ventana
 			 dispose();
 		 }else {
+			 //si "a" es false lanza un cuadro de diálogo
 			 JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
 		 }
-/*
-	        String contrase=new String (txtContrasena.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
-	            MenuUsuario menu = new MenuUsuario();
-	            menu.setVisible(true);
-	            dispose();	 
-	        }else {
-	            JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
-	        }*/
 	} 
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
