@@ -158,8 +158,8 @@ public class ReservasView extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
-				principal.setVisible(true);
+				MenuUsuario mUsuario = new MenuUsuario();
+				mUsuario.setVisible(true);
 				dispose();
 			}
 			@Override
@@ -291,10 +291,19 @@ public class ReservasView extends JFrame {
 		txtFormaPago.setModel(new DefaultComboBoxModel(new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"}));
 		panel.add(txtFormaPago);
 
+		//Fuancionamiento boton siguiente
 		JPanel btnsiguiente = new JPanel();
 		btnsiguiente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String fechaEntrada = String.valueOf(ReservasView.txtFechaEntrada.getDate());
+				String fechaSalida = String.valueOf(ReservasView.txtFechaSalida.getDate());
+
+
+
+				System.out.println(fechaEntrada);
+				System.out.println(fechaSalida);
+
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
 					RegistroHuesped registro = new RegistroHuesped();
 					registro.setVisible(true);
@@ -303,13 +312,20 @@ public class ReservasView extends JFrame {
 				}
 			}						
 		});
+
 		btnsiguiente.setLayout(null);
 		btnsiguiente.setBackground(SystemColor.textHighlight);
 		btnsiguiente.setBounds(238, 493, 122, 35);
 		panel.add(btnsiguiente);
 		btnsiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-
+		JLabel lblSiguient = new JLabel("Siguiente");
+		lblSiguient.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagenes/siguiente-24-px.png")));
+		lblSiguient.setBounds(5, 0, 200, 34);
+		lblSiguient.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSiguient.setForeground(Color.WHITE);
+		lblSiguient.setFont(new Font("Roboto", Font.PLAIN, 18));
+		btnsiguiente.add(lblSiguient);
 	}
 		
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
