@@ -3,6 +3,12 @@ package com.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Esta clase reprecenta la tabla Reserva de la base de datos.
+ *
+ * @since 20/08/2023
+ * @author Juan Pablo Rojas Cardozo | Nagisa054
+ */
 public class Reserva {
     Integer id;
     String fechaEntrada;
@@ -10,6 +16,12 @@ public class Reserva {
     BigDecimal precio;
     String formaPago;
 
+    /**
+     * @param fechaEntrada
+     * @param fechaSalida
+     * @param precio
+     * @param formaPago
+     */
     public Reserva(String fechaEntrada, String fechaSalida, BigDecimal precio, String formaPago) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;

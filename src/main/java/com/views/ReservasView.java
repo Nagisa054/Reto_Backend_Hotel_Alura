@@ -29,7 +29,17 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-
+/**
+ * Este código fué proporcionado por
+ * la gente de Alura-Chalenges y solo
+ * una pequeña párate fué modificada
+ * por Juan Pablo Rojas | Nagisa054.
+ * <br>
+ * Código original: https://github.com/alura-challenges/challenge-one-alura-hotel-latam
+ * <br><br>
+ * @since 24/08/2023
+ * @author Juan Pablo Rojas | Nagisa054
+ */
 @SuppressWarnings("serial")
 public class ReservasView extends JFrame {
 
@@ -274,7 +284,9 @@ public class ReservasView extends JFrame {
 			public void propertyChange(PropertyChangeEvent evt) {
 				//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
 				if(ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null){
+                    // se calcula el valor
 					BigDecimal valor = new CalcPrecio().calcularPorDias(ReservasView.txtFechaEntrada.getDate(), ReservasView.txtFechaSalida.getDate());
+                    // se muestra el valor
 					txtValor.setText(String.valueOf(valor));
 				}
 			}
@@ -312,10 +324,11 @@ public class ReservasView extends JFrame {
 
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
 
-					Integer fPago = txtFormaPago.getSelectedIndex();
+                    reservaController.reservar(ReservasView.txtFechaEntrada.getDate(),
+                            ReservasView.txtFechaSalida.getDate(),
+                            txtFormaPago.getSelectedIndex());
 
-					reservaController.reservar(ReservasView.txtFechaEntrada.getDate(), ReservasView.txtFechaSalida.getDate(), fPago);
-
+                    // se cierra la ventana
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
