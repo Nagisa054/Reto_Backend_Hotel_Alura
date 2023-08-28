@@ -10,7 +10,11 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
+
+import com.controller.ReservaController;
 import com.toedter.calendar.JDateChooser;
+import com.util.CalcPrecio;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -20,6 +24,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.math.BigDecimal;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -36,6 +41,7 @@ public class ReservasView extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+	ReservaController reservaController;
 
 	/**
 	 * Launch the application.
@@ -58,6 +64,9 @@ public class ReservasView extends JFrame {
 	 */
 	public ReservasView() {
 		super("Reserva");
+
+		reservaController = new ReservaController();
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagenes/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
@@ -264,6 +273,10 @@ public class ReservasView extends JFrame {
 		txtFechaSalida.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
+				if(ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null){
+					BigDecimal valor = new CalcPrecio().calcularPorDias(ReservasView.txtFechaEntrada.getDate(), ReservasView.txtFechaSalida.getDate());
+					txtValor.setText(String.valueOf(valor));
+				}
 			}
 		});
 		txtFechaSalida.setDateFormatString("yyyy-MM-dd");
@@ -296,21 +309,18 @@ public class ReservasView extends JFrame {
 		btnsiguiente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String fechaEntrada = String.valueOf(ReservasView.txtFechaEntrada.getDate());
-				String fechaSalida = String.valueOf(ReservasView.txtFechaSalida.getDate());
 
+				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
 
+					Integer fPago = txtFormaPago.getSelectedIndex();
 
-				System.out.println(fechaEntrada);
-				System.out.println(fechaSalida);
+					reservaController.reservar(ReservasView.txtFechaEntrada.getDate(), ReservasView.txtFechaSalida.getDate(), fPago);
 
-				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
-					RegistroHuesped registro = new RegistroHuesped();
-					registro.setVisible(true);
+					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}
-			}						
+			}
 		});
 
 		btnsiguiente.setLayout(null);
