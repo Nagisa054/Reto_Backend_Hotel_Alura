@@ -87,7 +87,7 @@ public class RegistroHuesped extends JFrame {
 		header.setOpaque(false);
 		header.setBounds(0, 0, 910, 36);
 		contentPane.add(header);
-		
+
 		JPanel btnAtras = new JPanel();
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
@@ -280,20 +280,18 @@ public class RegistroHuesped extends JFrame {
 		logo.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/Ha-100px.png")));
 		
 		JPanel btnexit = new JPanel();
-		btnexit.setBounds(857, 0, 53, 36);
-		contentPane.add(btnexit);
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
-				principal.setVisible(true);
+				MenuUsuario mUsuario = new MenuUsuario();
+				mUsuario.setVisible(true);
 				dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnexit.setBackground(Color.red);
 				labelExit.setForeground(Color.white);
-			}			
+			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				 btnexit.setBackground(Color.white);
@@ -302,7 +300,9 @@ public class RegistroHuesped extends JFrame {
 		});
 		btnexit.setLayout(null);
 		btnexit.setBackground(Color.white);
-		
+		btnexit.setBounds(857, 0, 53, 36);
+		header.add(btnexit);
+
 		labelExit = new JLabel("X");
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
