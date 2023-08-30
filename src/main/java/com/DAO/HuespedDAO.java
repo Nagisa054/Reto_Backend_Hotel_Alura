@@ -6,14 +6,27 @@ import com.views.MenuUsuario;
 import javax.swing.*;
 import java.sql.*;
 
-public class HuespedDAO {
 
+/**
+ * Aquí se maneja toda la lógica relacionada con la tabla "Huespedes" de la base de datos.
+ * @since 30/08/2023
+ * @author Juan Pablo Rojas | Nagisa054
+ */
+public class HuespedDAO {
     final private Connection con;
 
+    /**
+     *
+     * @param connection
+     */
     public HuespedDAO(Connection connection) {
         this.con = connection;
     }
 
+    /**
+     * Aquí se crean y guardan los registros de los Huespedes.
+     * @param huesped
+     */
     public void registrar(Huespedes huesped){
         try {
             //se crea la consulta SQL
@@ -43,7 +56,6 @@ public class HuespedDAO {
                     while(resultSet.next()){
                         huesped.setId(resultSet.getInt(1));
                         System.out.println(huesped);
-
                     }
                     JOptionPane.showMessageDialog(null, "Registro Guardado.");
 

@@ -63,23 +63,33 @@ public class ReservaDAO {
             throw new RuntimeException(e);
         }
     }
-    public Integer getLastInsertId(){
-        try {
-            int resultado = 0;
-            var query = "SELECT LAST_INSERT_ID(id) FROM reserva";
 
-            PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            try(statement) {
+    /**
+     *
+     * @return un Integer, el ID de la ultima reserva guardada en la base de datos.
+     */
+     public Integer getLastInsertId(){
+         /*
+         * Este método es usado por la clase HuespedController para
+         * relacionar el registro del huesped y sú reserva.0
+         */
+         try {
 
-                final ResultSet resultSet = statement.executeQuery();
-                try(resultSet) {
-                    while (resultSet.next()) resultado = resultSet.getInt(1);
-                }
-            }
-//            con.close();
-            return resultado;
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+         int resultado = 0;
+         var query = "SELECT LAST_INSERT_ID(id) FROM reserva";
+
+         PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+         try(statement) {
+
+             final ResultSet resultSet = statement.executeQuery();
+             try(resultSet) {
+                 while (resultSet.next()) resultado = resultSet.getInt(1);
+             }
+         }
+    //         con.close();
+             return resultado;
+         }catch (SQLException e) {
+             throw new RuntimeException(e);
+         }
     }
 }

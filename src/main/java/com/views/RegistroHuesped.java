@@ -17,6 +17,17 @@ import java.awt.event.MouseMotionAdapter;
 import java.text.Format;
 import java.awt.Toolkit;
 
+/**
+ * Este código fué proporcionado por
+ * la gente de Alura-Chalenges y solo
+ * una pequeña párate fué modificada
+ * por Juan Pablo Rojas | Nagisa054.
+ * <br>
+ * Código original: https://github.com/alura-challenges/challenge-one-alura-hotel-latam
+ * <br><br>
+ * @since 30/08/2023
+ * @author Juan Pablo Rojas | Nagisa054
+ */
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
 
@@ -248,6 +259,13 @@ public class RegistroHuesped extends JFrame {
 		JPanel btnguardar = new JPanel();
 		btnguardar.setBounds(723, 560, 122, 35);
 		btnguardar.addMouseListener(new MouseAdapter() {
+
+			/*
+			Cuando el evento mouseClicked es activado se comprueba que
+			los campos del formulario nó estén vacíos. Si están vacíos
+			es lanzado un JOptionPane, sí no, sé mandan todos los datos
+			al método registrar de la clase huespedController.
+			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
@@ -266,8 +284,10 @@ public class RegistroHuesped extends JFrame {
 							txtTelefono.getText(),
 							Integer.valueOf(txtNreserva.getText())
 					);
+					// se cierra esta ventana
 					dispose();
 				} else {
+					// en caso de que algún campo esté vacío.
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}
             }

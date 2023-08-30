@@ -1,5 +1,11 @@
 package com.model;
 
+/**
+ * Esta clase representa la tabla Huespedes de la base de datos.
+ *
+ * @since 30/08/2023
+ * @author Juan Pablo Rojas Cardozo | Nagisa054
+ */
 public class Huespedes {
 
     private Integer id;
@@ -10,6 +16,15 @@ public class Huespedes {
     private String telefono;
     private Integer reservaId;
 
+    /**
+     *
+     * @param nombre
+     * @param apellido
+     * @param fechaNacimiento
+     * @param nacionalidad
+     * @param telefono
+     * @param reservaId
+     */
     public Huespedes(String nombre, String apellido, String fechaNacimiento,
                      String nacionalidad, String telefono, Integer reservaId) {
         this.nombre = nombre;
