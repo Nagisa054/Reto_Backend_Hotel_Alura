@@ -1,7 +1,6 @@
 package com.DAO;
 
 import com.model.Reserva;
-import com.util.TransformarFecha;
 import com.views.RegistroHuesped;
 
 import java.sql.*;
@@ -43,12 +42,6 @@ public class ReservaDAO {
                 //Sé ejecuta la consulta
                 statement.execute();
 
-                System.out.println(query + "\n"
-                                + reserva.getFechaEntrada() + "\n"
-                                + reserva.getFechaSalida() + "\n"
-                                + reserva.getPrecio()  + "\n"
-                                + reserva.getFormaPago()  + "\n");
-
                 // Se crea un objeto de tipo ResultSet
                 final ResultSet resultSet = statement.getGeneratedKeys();
                 try(resultSet) {
@@ -58,13 +51,33 @@ public class ReservaDAO {
                         //sé asigna el id a "reserva". Este id es el valor de la primera columna del resultSet
                         reserva.setId(resultSet.getInt(1));
 
-                        System.out.println("Se a creado la reserva: " + reserva );
+                        System.out.println(reserva);
                     }
                 }
                 // Se crea una ventana de Registro huéspedes y se muestra.
                 RegistroHuesped registro = new RegistroHuesped();
                 registro.setVisible(true);
             }
+            con.close();
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Integer getLastInsertId(){
+        try {
+            int resultado = 0;
+            var query = "SELECT LAST_INSERT_ID(id) FROM reserva";
+
+            PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            try(statement) {
+
+                final ResultSet resultSet = statement.executeQuery();
+                try(resultSet) {
+                    while (resultSet.next()) resultado = resultSet.getInt(1);
+                }
+            }
+//            con.close();
+            return resultado;
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }

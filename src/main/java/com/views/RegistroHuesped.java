@@ -1,38 +1,35 @@
 package com.views;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import java.awt.Color;
+
+import com.controller.HuespedController;
 import com.toedter.calendar.JDateChooser;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
+import com.util.TransformarFecha;
+
 import java.awt.Font;
-import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.Format;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNombre;
-	private JTextField txtApellido;
-	private JTextField txtTelefono;
-	private JTextField txtNreserva;
-	private JDateChooser txtFechaN;
-	private JComboBox<Format> txtNacionalidad;
+	private static JTextField txtNombre;
+	private static JTextField txtApellido;
+	private static JTextField txtTelefono;
+	private static JTextField txtNreserva;
+	private static JDateChooser txtFechaN;
+	private static JComboBox<Format> txtNacionalidad;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+	private HuespedController huespedController;
 	int xMouse, yMouse;
 
 	/**
@@ -55,7 +52,8 @@ public class RegistroHuesped extends JFrame {
 	 * Create the frame.
 	 */
 	public RegistroHuesped() {
-		
+		this.huespedController = new HuespedController();
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
@@ -207,6 +205,8 @@ public class RegistroHuesped extends JFrame {
 		txtNreserva.setBackground(Color.WHITE);
 		txtNreserva.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		contentPane.add(txtNreserva);
+		// Muestra el ID de la última reserva registrada en la base de datos.
+		txtNreserva.setText(String.valueOf(huespedController.getLastReservaId()));
 		
 		JSeparator separator_1_2 = new JSeparator();
 		separator_1_2.setBounds(560, 170, 289, 2);
@@ -243,13 +243,34 @@ public class RegistroHuesped extends JFrame {
 		separator_1_2_5.setForeground(new Color(12, 138, 199));
 		separator_1_2_5.setBackground(new Color(12, 138, 199));
 		contentPane.add(separator_1_2_5);
-		
+
+		//funcionamiento GUARDAR
 		JPanel btnguardar = new JPanel();
 		btnguardar.setBounds(723, 560, 122, 35);
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			}
+
+				if (RegistroHuesped.txtNombre.getText() != null && RegistroHuesped.txtApellido.getText() != null
+						&& RegistroHuesped.txtFechaN.getDate() != null && RegistroHuesped.txtNacionalidad.getSelectedItem() != null
+						&& RegistroHuesped.txtTelefono.getText() != null && RegistroHuesped.txtNreserva.getText() != null) {
+
+                	// Se cambia el formato de la fecha
+					String fNacimiento = new TransformarFecha().trasformar(txtFechaN.getDate());
+
+					huespedController.registrar(
+							txtNombre.getText(),
+							txtApellido.getText(),
+							fNacimiento,
+							txtNacionalidad.getSelectedItem().toString(),
+							txtTelefono.getText(),
+							Integer.valueOf(txtNreserva.getText())
+					);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+				}
+            }
 		});
 		btnguardar.setLayout(null);
 		btnguardar.setBackground(new Color(12, 138, 199));
