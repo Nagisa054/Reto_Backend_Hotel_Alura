@@ -71,10 +71,18 @@ public class ReservaController {
         reserva = new Reserva(fechaE, fechaS, precio,fpago);
 
         // *  el objeto reserva es enviado como parametro al método "guardar" de ReservaDAO
-        reservaDAO.guardar(reserva);
+       this.reservaDAO.guardar(reserva);
     }
 
     public List<Reserva> listar(){
-        return reservaDAO.listar();
+        return this.reservaDAO.listar();
+    }
+
+    public int editar(int id, String fechaEntrada, String fechaSalida, BigDecimal precio, String formaPago){
+        return this.reservaDAO.editar(id, fechaEntrada, fechaSalida, precio, formaPago);
+    }
+
+    public int eliminar(int id){
+        return this.reservaDAO.eliminar(id);
     }
 }

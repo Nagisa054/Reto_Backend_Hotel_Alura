@@ -4,25 +4,17 @@ import com.controller.HuespedController;
 import com.controller.ReservaController;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
 import java.awt.Color;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
-import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -223,7 +215,7 @@ public class Busqueda extends JFrame {
 		
 		JPanel btnbuscar = new JPanel();
 
-		// FUNCIONAMIENTO BUSCAR
+		// boton BUSCAR
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -244,6 +236,22 @@ public class Busqueda extends JFrame {
 		lblBuscar.setFont(new Font("Roboto", Font.PLAIN, 18));
 		
 		JPanel btnEditar = new JPanel();
+		// boton EDITAR
+		btnEditar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tbReservas.isVisible()) {
+					editarReservas();
+					limpiarTbReservas();
+					cargarTbResrvas();
+				}
+				if (tbHuespedes.isVisible()) {
+					editarReservas();
+					limpiarTbReservas();
+					cargarTbResrvas();
+				}
+			}
+		});
 		btnEditar.setLayout(null);
 		btnEditar.setBackground(new Color(12, 138, 199));
 		btnEditar.setBounds(635, 508, 122, 35);
@@ -258,6 +266,22 @@ public class Busqueda extends JFrame {
 		btnEditar.add(lblEditar);
 		
 		JPanel btnEliminar = new JPanel();
+		//boton ELIMINAR
+		btnEliminar.addMouseListener(new MouseAdapter() {
+			 @Override
+			 public void mouseClicked(MouseEvent e) {
+				 if (tbReservas.isVisible()){
+				 	eliminarReservas();
+				 	limpiarTbReservas();
+				 	cargarTbResrvas();
+				 }
+				 if (tbHuespedes.isVisible()) {
+					eliminarReservas();
+				 	limpiarTbReservas();
+				 	cargarTbResrvas();
+				 }
+			 }
+		});
 		btnEliminar.setLayout(null);
 		btnEliminar.setBackground(new Color(12, 138, 199));
 		btnEliminar.setBounds(767, 508, 122, 35);
@@ -286,6 +310,53 @@ public class Busqueda extends JFrame {
 				reserva.getPrecio(),
 				reserva.getFormaPago()
 				}));
+	}
+
+	private void limpiarTbReservas() {
+		modelo.getDataVector().clear();
+	}
+
+
+	private Boolean filaElegida(JTable a) {
+		return a.getSelectedRowCount() == 0 || a.getSelectedColumnCount() == 0;
+	}
+
+	private void editarReservas(){
+		if(filaElegida(tbReservas)){
+			JOptionPane.showMessageDialog(null, "Seleccione un item");
+			return;
+		}
+		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
+				.ifPresentOrElse(fila -> {
+
+				int id = Integer.parseInt(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
+				String fechaE = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 1);
+				String fechaS = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 2);
+				BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(modelo.getValueAt(tbReservas.getSelectedRow(), 3).toString()));
+				String fPago = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
+
+				var cantidadModificada = this.reservaController.editar(id, fechaE, fechaS, precio, fPago);
+				JOptionPane.showMessageDialog(this, cantidadModificada + " Filas Modificadas");
+
+		}, () -> JOptionPane.showMessageDialog(null, "Seleccione un item"));
+	}
+
+	private void eliminarReservas(){
+		if(filaElegida(tbReservas)){
+			JOptionPane.showMessageDialog(null, "Seleccione un item");
+			return;
+		}
+
+		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
+				.ifPresentOrElse(fila -> {
+
+					Integer id = Integer.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
+
+					int cantidadModificada = this.reservaController.eliminar(id);
+					modelo.removeRow(tbReservas.getSelectedRow());
+
+					JOptionPane.showMessageDialog(null, "Registro eliminado exitosamente.");
+		}, () -> JOptionPane.showMessageDialog(null, "Seleccione una fila"));
 	}
 
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

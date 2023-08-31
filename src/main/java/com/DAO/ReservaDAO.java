@@ -4,6 +4,8 @@ import com.google.protobuf.DescriptorProtos;
 import com.model.Reserva;
 import com.views.RegistroHuesped;
 
+import javax.swing.*;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,35 @@ public class ReservaDAO {
     public ReservaDAO(Connection connection){
         this.con = connection;
 
+    }
+
+    /**
+     *
+     * @return un Integer, el ID de la última reserva guardada en la base de datos.
+     */
+     public Integer getLastInsertId(){
+         /*
+         * Este método es usado por la clase HuespedController para
+         * relacionar el registro del huesped y sú reserva.0
+         */
+         try {
+
+         int resultado = 0;
+         var query = "SELECT LAST_INSERT_ID(id) FROM reserva";
+
+         PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+         try(statement) {
+
+             final ResultSet resultSet = statement.executeQuery();
+             try(resultSet) {
+                 while (resultSet.next()) resultado = resultSet.getInt(1);
+             }
+         }
+    //         con.close();
+             return resultado;
+         }catch (SQLException e) {
+             throw new RuntimeException(e);
+         }
     }
 
     /**
@@ -67,34 +98,6 @@ public class ReservaDAO {
         }
     }
 
-    /**
-     *
-     * @return un Integer, el ID de la ultima reserva guardada en la base de datos.
-     */
-     public Integer getLastInsertId(){
-         /*
-         * Este método es usado por la clase HuespedController para
-         * relacionar el registro del huesped y sú reserva.0
-         */
-         try {
-
-         int resultado = 0;
-         var query = "SELECT LAST_INSERT_ID(id) FROM reserva";
-
-         PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-         try(statement) {
-
-             final ResultSet resultSet = statement.executeQuery();
-             try(resultSet) {
-                 while (resultSet.next()) resultado = resultSet.getInt(1);
-             }
-         }
-    //         con.close();
-             return resultado;
-         }catch (SQLException e) {
-             throw new RuntimeException(e);
-         }
-    }
 
     /**
      *
@@ -111,7 +114,7 @@ public class ReservaDAO {
                 Reserva fila = new Reserva(resultSet.getInt("id"),
                         resultSet.getString("fecha_entrada"),
                         resultSet.getString("fecha_salida"),
-                        resultSet.getFloat("valor"),
+                        resultSet.getBigDecimal("valor"),
                         resultSet.getString("forma_pago"));
                 resultado.add(fila);
             }
@@ -121,6 +124,55 @@ public class ReservaDAO {
         }
         return resultado;
     }
+    public Integer editar(int id, String fechaEntrada, String fechaSalida, BigDecimal precio, String formaPago){
+        String query = "UPDATE reserva SET " +
+                "id = ?, fecha_entrada = ?, fecha_salida = ?, valor = ?, forma_pago = ? WHERE id = ?";
+        try(PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.setString(2, fechaEntrada);
+            statement.setString(3, fechaSalida);
+            statement.setBigDecimal(4, precio);
+            statement.setString(5, formaPago);
+            statement.setInt(6, id);
 
+            statement.execute();
 
+            JOptionPane.showMessageDialog(null, "Registro Modificado Exitosa mente.");
+            return statement.getUpdateCount();
+
+        }catch (SQLException e){
+                throw new RuntimeException(e);
+            }
+    }
+
+    public Integer eliminar(int id){
+        String query = "DELETE FROM reserva WHERE id = ?;";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, id);
+
+            desactivarClaveForanea();
+            statement.execute();
+            activarClaveForanea();
+
+            return statement.getUpdateCount();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void desactivarClaveForanea(){
+        try (PreparedStatement statement = con.prepareStatement("SET FOREIGN_KEY_CHECKS = 0")) {
+            statement.execute();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void activarClaveForanea(){
+        try (PreparedStatement statement = con.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {
+            statement.execute();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }
