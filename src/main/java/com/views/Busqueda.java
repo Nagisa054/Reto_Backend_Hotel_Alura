@@ -1,5 +1,8 @@
 package com.views;
 
+import com.controller.HuespedController;
+import com.controller.ReservaController;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,6 +36,8 @@ public class Busqueda extends JFrame {
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+	private ReservaController reservaController;
+	private HuespedController huespedController;
 
 	/**
 	 * Launch the application.
@@ -54,6 +59,9 @@ public class Busqueda extends JFrame {
 	 * Create the frame.
 	 */
 	public Busqueda() {
+		this.reservaController = new ReservaController();
+		this.huespedController = new HuespedController();
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -85,7 +93,9 @@ public class Busqueda extends JFrame {
 		contentPane.add(panel);
 
 		
-		
+		/*
+		TABLA RESERVAS
+		 */
 		
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -99,8 +109,12 @@ public class Busqueda extends JFrame {
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
 		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
+		//cargar tabla
+		cargarTbResrvas();
 		
-		
+		/*
+		TABLA HUÉSPEDES
+		 */
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -208,6 +222,8 @@ public class Busqueda extends JFrame {
 		contentPane.add(separator_1_2);
 		
 		JPanel btnbuscar = new JPanel();
+
+		// FUNCIONAMIENTO BUSCAR
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -256,7 +272,22 @@ public class Busqueda extends JFrame {
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
 	}
-	
+
+	/**
+	 * Lista todos los registros de la tabla reservas
+	 */
+	private void cargarTbResrvas(){
+		var reservas = this.reservaController.listar();
+
+		reservas.forEach(reserva -> modelo.addRow(new Object[]{
+				reserva.getId(),
+				reserva.getFechaEntrada(),
+				reserva.getFechaSalida(),
+				reserva.getPrecio(),
+				reserva.getFormaPago()
+				}));
+	}
+
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();

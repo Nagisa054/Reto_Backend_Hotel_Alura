@@ -29,6 +29,14 @@ public class Reserva {
         this.formaPago = formaPago;
     }
 
+    public Reserva(int id, String fechaEntrada, String fechaSalida, Float precio,String formaPago) {
+        this.id = id;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.precio = BigDecimal.valueOf(precio);
+        this.formaPago = formaPago;
+    }
+
     //GETERS
     public Integer getId() {
         return id;

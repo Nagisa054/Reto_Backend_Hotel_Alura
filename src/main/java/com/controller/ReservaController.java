@@ -10,6 +10,8 @@ import com.views.ReservasView;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.Date;
+import java.util.List;
+
 /**
  * Esta clase se encarga de gestionar las acciones de la clase ReservasView.
  *<br><br>
@@ -70,5 +72,9 @@ public class ReservaController {
 
         // *  el objeto reserva es enviado como parametro al método "guardar" de ReservaDAO
         reservaDAO.guardar(reserva);
+    }
+
+    public List<Reserva> listar(){
+        return reservaDAO.listar();
     }
 }

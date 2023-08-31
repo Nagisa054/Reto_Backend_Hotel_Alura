@@ -1,9 +1,12 @@
 package com.DAO;
 
+import com.google.protobuf.DescriptorProtos;
 import com.model.Reserva;
 import com.views.RegistroHuesped;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Aquí se maneja toda la lógica relacionada con la tabla "Reserva" de la base de datos.
@@ -92,4 +95,32 @@ public class ReservaDAO {
              throw new RuntimeException(e);
          }
     }
+
+    /**
+     *
+     * @return un List de Reserva
+     */
+    public List<Reserva> listar(){
+        List<Reserva> resultado = new ArrayList<Reserva>();
+        String query = "SELECT id, fecha_entrada, fecha_salida, valor, forma_pago FROM reserva";
+
+        try (PreparedStatement statement = con.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while(resultSet.next()){
+                Reserva fila = new Reserva(resultSet.getInt("id"),
+                        resultSet.getString("fecha_entrada"),
+                        resultSet.getString("fecha_salida"),
+                        resultSet.getFloat("valor"),
+                        resultSet.getString("forma_pago"));
+                resultado.add(fila);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return resultado;
+    }
+
+
 }
