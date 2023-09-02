@@ -16,6 +16,17 @@ import java.awt.event.MouseMotionAdapter;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * Este código fué proporcionado por
+ * la gente de Alura-Chalenges y solo
+ * una pequeña párate fué modificada
+ * por Juan Pablo Rojas | Nagisa054.
+ * <br>
+ * Código original: https://github.com/alura-challenges/challenge-one-alura-hotel-latam
+ * <br><br>
+ * @since 1/09/2023
+ * @author Juan Pablo Rojas | Nagisa054
+ */
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
 
@@ -309,39 +320,65 @@ public class Busqueda extends JFrame {
 				reserva.getFechaSalida(),
 				reserva.getPrecio(),
 				reserva.getFormaPago()
-				}));
+		}));
 	}
 
+	/**
+	 * Limpia la tabla
+	 */
 	private void limpiarTbReservas() {
 		modelo.getDataVector().clear();
 	}
 
-
+	/**
+	 * Comprueba que halla alguna celda de la tabla seleccionada
+	 * @param a
+	 * @return true si el indice de la fila o la columna es <= 0,
+	 * false si es > 0.
+	 */
 	private Boolean filaElegida(JTable a) {
-		return a.getSelectedRowCount() == 0 || a.getSelectedColumnCount() == 0;
+		return a.getSelectedRowCount() <= 0 || a.getSelectedColumnCount() <= 0;
 	}
 
+	/**
+	 * Obtiene los datos de la fila seleccionada y los envía al
+	 * método "editar" de la clase ReservaController, luego lanza un MessageDialog
+	 * Con la cantidad de filas modificadas, Si hay un error el MessageDialog lo dirá.
+	 */
 	private void editarReservas(){
+		//Sé comprueba que haya una fila Seleccionada.
 		if(filaElegida(tbReservas)){
 			JOptionPane.showMessageDialog(null, "Seleccione un item");
 			return;
 		}
+
 		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
 				.ifPresentOrElse(fila -> {
 
-				int id = Integer.parseInt(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
-				String fechaE = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 1);
-				String fechaS = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 2);
-				BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(modelo.getValueAt(tbReservas.getSelectedRow(), 3).toString()));
-				String fPago = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
+					// sé obtienen los datos de la fila seleccionada.
+					int id = Integer.parseInt(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
+					String fechaE = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 1);
+					String fechaS = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 2);
+					BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(modelo.getValueAt(tbReservas.getSelectedRow(), 3).toString()));
+					String fPago = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
 
-				var cantidadModificada = this.reservaController.editar(id, fechaE, fechaS, precio, fPago);
-				JOptionPane.showMessageDialog(this, cantidadModificada + " Filas Modificadas");
+					// los datos son enviados al controlador.
+					var cantidadModificada = this.reservaController.editar(id, fechaE, fechaS, precio, fPago);
 
-		}, () -> JOptionPane.showMessageDialog(null, "Seleccione un item"));
+					//se muestra la cantidad de filas modificadas.
+					JOptionPane.showMessageDialog(this, cantidadModificada + " Filas Modificadas");
+
+				}, () -> JOptionPane.showMessageDialog(null, "Seleccione un item"));// si no hay una fila seleccionada, muestra un MessageDialog.
 	}
 
+	/**
+	 * Obtienen el índice del registro seleccionado y lo manda al
+	 * método "eliminar" de la clase ReservaController, luego
+	 * lanza un MessageDialog para anunciar que la eliminación
+	 * fué exitosa.
+	 */
 	private void eliminarReservas(){
+		//Sé comprueba que haya una fila Seleccionada.
 		if(filaElegida(tbReservas)){
 			JOptionPane.showMessageDialog(null, "Seleccione un item");
 			return;
@@ -350,13 +387,17 @@ public class Busqueda extends JFrame {
 		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
 				.ifPresentOrElse(fila -> {
 
+					// sé obtiene el id del registro.
 					Integer id = Integer.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
 
-					int cantidadModificada = this.reservaController.eliminar(id);
+					// Él id es enviado al controlador.
+					this.reservaController.eliminar(id);
+					// Sé remueve la fila de la tala para no tener filas bacías.
 					modelo.removeRow(tbReservas.getSelectedRow());
 
+					// se lanza un MessageDialog para anunciar que el registro fué eliminado.
 					JOptionPane.showMessageDialog(null, "Registro eliminado exitosamente.");
-		}, () -> JOptionPane.showMessageDialog(null, "Seleccione una fila"));
+		}, () -> JOptionPane.showMessageDialog(null, "Seleccione una fila"));// si no hay una fila seleccionada, muestra un MessageDialog.
 	}
 
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

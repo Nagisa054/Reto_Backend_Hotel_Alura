@@ -74,14 +74,32 @@ public class ReservaController {
        this.reservaDAO.guardar(reserva);
     }
 
+    /**
+     *
+     * @return Un List de Reserva
+     */
     public List<Reserva> listar(){
         return this.reservaDAO.listar();
     }
 
+    /**
+     *
+     * @param id
+     * @param fechaEntrada
+     * @param fechaSalida
+     * @param precio
+     * @param formaPago
+     * @return Un Integer Con la cantidad de registros modificados
+     */
     public int editar(int id, String fechaEntrada, String fechaSalida, BigDecimal precio, String formaPago){
         return this.reservaDAO.editar(id, fechaEntrada, fechaSalida, precio, formaPago);
     }
 
+    /**
+     *
+     * @param id
+     * @return un Integer
+     */
     public int eliminar(int id){
         return this.reservaDAO.eliminar(id);
     }
